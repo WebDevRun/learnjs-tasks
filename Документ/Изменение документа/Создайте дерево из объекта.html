@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <script>
+      // function createTree(container, data) {
+      //   if (Object.keys(data).length === 0) return
+
+      //   const ul = document.createElement('ul')
+
+      //   for (const key in data) {
+      //     const li = document.createElement('li')
+      //     li.textContent = key
+      //     ul.append(li)
+      //     createTree(ul, data[key])
+      //   }
+
+      //   container.append(ul)
+      // }
+
+      function createTree(container, data) {
+        function createUl(data) {
+          if (Object.keys(data).length === 0) return ''
+
+          let content = '<ul>'
+
+          for (const key in data) {
+            content += `<li>${key}</li>`
+            content += createUl(data[key])
+          }
+
+          content += '</ul>'
+          return content
+        }
+
+        container.innerHTML = createUl(data)
+      }
+
+      const data = {
+        Рыбы: {
+          форель: {},
+          лосось: {},
+        },
+
+        Деревья: {
+          Огромные: {
+            секвойя: {},
+            дуб: {},
+          },
+          Цветковые: {
+            яблоня: {},
+            магнолия: {},
+          },
+        },
+      }
+
+      const container = document.getElementById('container')
+
+      createTree(container, data)
+    </script>
+  </body>
+</html>

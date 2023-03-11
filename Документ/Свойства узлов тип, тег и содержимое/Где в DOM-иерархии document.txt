@@ -1,0 +1,3 @@
+document имеет класс HTMLDocument.
+В DOM иерархии он занимает третье место.
+document наследует от Node и Document.

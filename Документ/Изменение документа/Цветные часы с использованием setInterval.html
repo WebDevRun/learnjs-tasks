@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .clock .hours {
+        color: red;
+      }
+
+      .clock .minutes {
+        color: green;
+      }
+
+      .clock .seconds {
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div class="clock">
+        <span class="hours">hh</span>:<span class="minutes">mm</span>:<span
+          class="seconds"
+          >ss</span
+        >
+      </div>
+
+      <div class="controls">
+        <button class="start" type="button">Start</button>
+        <button class="stop" type="button">Stop</button>
+      </div>
+    </div>
+    <script>
+      const clock = document.querySelector('.clock')
+      const startButton = document.querySelector('button.start')
+      const stopButton = document.querySelector('button.stop')
+
+      let timer
+
+      function formatTime(time) {
+        return time < 10 ? `0${time}` : `${time}`
+      }
+
+      function getTime() {
+        const date = new Date()
+
+        const hours = formatTime(date.getHours())
+        const minutes = formatTime(date.getMinutes())
+        const seconds = formatTime(date.getSeconds())
+
+        return { hours, minutes, seconds }
+      }
+
+      function startClickHandler() {
+        timer = setInterval(() => {
+          const { hours, minutes, seconds } = getTime()
+          const [hoursTag, minutesTag, secondsTag] = clock.children
+
+          hoursTag.textContent = hours
+          minutesTag.textContent = minutes
+          secondsTag.textContent = seconds
+        }, 1000)
+      }
+
+      function stopClickHandler() {
+        clearInterval(timer)
+        timer = undefined
+      }
+
+      startButton.addEventListener('click', startClickHandler)
+      stopButton.addEventListener('click', stopClickHandler)
+    </script>
+  </body>
+</html>

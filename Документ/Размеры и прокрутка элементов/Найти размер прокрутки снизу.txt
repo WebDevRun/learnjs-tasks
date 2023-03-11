@@ -1,0 +1,1 @@
+const scrollButtom = elem.scrollHeight - elem.scrollTop - elem.clientHeight

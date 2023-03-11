@@ -1,0 +1,3 @@
+* Свойство getComputedStyle(elem).width завидит от box-sizing.
+* Свойство getComputedStyle(elem).width может вернуть auto.
+* Свойство getComputedStyle(elem).width по разному работают в разных браузерах.

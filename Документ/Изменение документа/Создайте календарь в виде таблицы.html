@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      th,
+      td {
+        border: 1px solid #000;
+      }
+
+      table {
+        border-collapse: collapse;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cal"></div>
+
+    <script>
+      const cal = document.querySelector('#cal')
+
+      function createHeader() {
+        const days = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС']
+        const thead = document.createElement('thead')
+        const headTr = document.createElement('tr')
+
+        for (const day of days) {
+          const th = document.createElement('th')
+          th.textContent = day
+          headTr.append(th)
+        }
+
+        thead.append(headTr)
+
+        return thead
+      }
+
+      function calcDateArray(year, month) {
+        const date = new Date(year, month - 1)
+        const lastDate = new Date(year, month, 0)
+
+        const day = date.getDay()
+        const firstPartArray = Array(day - 1).fill('')
+
+        const lastDay = lastDate.getDay()
+        const remainDays = 7 - lastDay === 7 ? 0 : 7 - lastDay
+        const lastPartArray = Array(remainDays).fill('')
+
+        for (let i = date.getDate(); i <= lastDate.getDate(); i++) {
+          firstPartArray.push(i)
+        }
+
+        return firstPartArray.concat(lastPartArray)
+      }
+
+      function createBody(data) {
+        const tbody = document.createElement('tbody')
+        const trArray = []
+        let tdArray = []
+
+        for (let i = 0; i < data.length; i++) {
+          const td = document.createElement('td')
+          td.textContent = data[i]
+          tdArray.push(td)
+
+          if (tdArray.length === 7) {
+            const tr = document.createElement('tr')
+            tr.append(...tdArray)
+            trArray.push(tr)
+            tdArray = []
+          }
+        }
+
+        tbody.append(...trArray)
+        return tbody
+      }
+
+      function createCalendar(elem, year, month) {
+        const table = document.createElement('table')
+
+        const dateArray = calcDateArray(year, month)
+        const thead = createHeader()
+        const tbody = createBody(dateArray)
+        console.log(dateArray)
+
+        table.append(thead, tbody)
+        elem.append(table)
+      }
+
+      createCalendar(cal, 2012, 9)
+      // createCalendar(cal, 2023, 7)
+    </script>
+  </body>
+</html>
