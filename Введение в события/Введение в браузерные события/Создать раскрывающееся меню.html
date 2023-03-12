@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      div {
+        cursor: pointer;
+      }
+
+      div span {
+        color: green;
+      }
+
+      ul {
+        display: none;
+        list-style: none;
+      }
+
+      .open {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div><span>▶</span>Сладости (нажми меня)!</div>
+    <ul>
+      <li>Пирожное</li>
+      <li>Пончик</li>
+      <li>Мёд</li>
+    </ul>
+
+    <script>
+      const arrow = {
+        left: '▶',
+        bottom: '▼',
+      }
+      const ul = document.querySelector('ul')
+      const div = document
+        .querySelector('div')
+        .addEventListener('click', () => {
+          const span = event.target.firstElementChild
+
+          ul.classList.toggle('open')
+
+          if (ul.classList.contains('open')) span.textContent = arrow.bottom
+          else span.textContent = arrow.left
+        })
+    </script>
+  </body>
+</html>
