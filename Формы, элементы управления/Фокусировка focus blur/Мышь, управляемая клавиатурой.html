@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      #mouse {
+        display: inline-block;
+        cursor: pointer;
+        margin: 0;
+      }
+
+      #mouse:focus {
+        outline: 1px dashed black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>
+      Кликните по "изображению" мыши и перемещайте её с помощью клавиш со
+      стрелками.
+    </p>
+
+    <pre id="mouse">
+ _   _
+(q\_/p)
+ /. .\
+=\_t_/=   __
+ /   \   (
+((   ))   )
+/\) (/\  /
+\  Y  /-'
+ nn^nn
+</pre
+    >
+
+    <script>
+      const keydownHandler = (event) => {
+        const arrowFunctions = {
+          ArrowRight: (target) =>
+            (target.style.transform += `translateX(${target.clientWidth}px)`),
+          ArrowLeft: (target) =>
+            (target.style.transform += `translateX(-${target.clientWidth}px)`),
+          ArrowUp: (target) =>
+            (target.style.transform += `translateY(-${target.clientHeight}px)`),
+          ArrowDown: (target) =>
+            (target.style.transform += `translateY(${target.clientHeight}px)`),
+        }
+
+        arrowFunctions[event.key](event.target)
+      }
+
+      const mouse = document.querySelector('#mouse')
+      mouse.tabIndex = '0'
+
+      mouse.addEventListener('click', (event) => {
+        if (event.target !== mouse) return
+        event.target.focus()
+      })
+
+      mouse.addEventListener('focus', (event) => {
+        event.target.addEventListener('keydown', keydownHandler)
+      })
+
+      mouse.addEventListener('blur', (event) => {
+        event.target.removeEventListener('keydown', keydownHandler)
+      })
+    </script>
+  </body>
+</html>

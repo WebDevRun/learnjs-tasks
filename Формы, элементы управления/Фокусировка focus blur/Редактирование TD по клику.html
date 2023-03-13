@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      th {
+        text-align: center;
+        font-weight: bold;
+      }
+
+      td {
+        width: 150px;
+        white-space: nowrap;
+        text-align: center;
+        vertical-align: middle;
+        padding: 10px;
+      }
+
+      .nw {
+        background-color: #999;
+      }
+
+      .n {
+        background-color: #03f;
+        color: #fff;
+      }
+
+      .ne {
+        background-color: #ff6;
+      }
+
+      .w {
+        background-color: #ff0;
+      }
+
+      .c {
+        background-color: #60c;
+        color: #fff;
+      }
+
+      .e {
+        background-color: #09f;
+        color: #fff;
+      }
+
+      .sw {
+        background-color: #963;
+        color: #fff;
+      }
+
+      .s {
+        background-color: #f60;
+        color: #fff;
+      }
+
+      .se {
+        background-color: #0c3;
+        color: #fff;
+      }
+
+      td:has(.edit-wrapper) {
+        padding: 0;
+      }
+
+      .edit-wrapper {
+        margin: 0;
+        padding: 0;
+        position: relative;
+      }
+
+      .edit-textarea {
+        width: 100%;
+        height: 100%;
+        resize: none;
+        outline: none;
+      }
+
+      .edit-controls {
+        position: absolute;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>
+      Кликните на ячейку таблицы, чтобы отредактировать её. Нажмите ОК или
+      ОТМЕНА, когда закончите.
+    </p>
+
+    <table id="bagua-table">
+      <tr>
+        <th colspan="3">
+          Квадрат <em>Bagua</em>: Направление, Элемент, Цвет, Значение
+        </th>
+      </tr>
+      <tr>
+        <td class="nw">
+          <strong>Северо-Запад</strong> <br />Металл <br />Серебро
+          <br />Старейшины
+        </td>
+        <td class="n">
+          <strong>Север</strong> <br />Вода <br />Синий <br />Перемены
+        </td>
+        <td class="ne">
+          <strong>Северо-Восток</strong> <br />Земля <br />Жёлтый
+          <br />Направление
+        </td>
+      </tr>
+      <tr>
+        <td class="w">
+          <strong>Запад</strong> <br />Металл <br />Золото <br />Молодость
+        </td>
+        <td class="c">
+          <strong>Центр</strong> <br />Всё <br />Пурпурный <br />Гармония
+        </td>
+        <td class="e">
+          <strong>Восток</strong> <br />Дерево <br />Синий <br />Будущее
+        </td>
+      </tr>
+      <tr>
+        <td class="sw">
+          <strong>Юго-Запад</strong> <br />Земля <br />Коричневый
+          <br />Спокойствие
+        </td>
+        <td class="s">
+          <strong>Юг</strong> <br />Огонь <br />Оранжевый <br />Слава
+        </td>
+        <td class="se">
+          <strong>Юго-Восток</strong> <br />Дерево <br />Зеленый <br />Роман
+        </td>
+      </tr>
+    </table>
+
+    <script>
+      function createEditElement() {
+        const editWrapper = document.createElement('div')
+        editWrapper.classList.add('edit-wrapper')
+
+        const textarea = document.createElement('textarea')
+        textarea.classList.add('edit-textarea')
+
+        const editControls = document.createElement('div')
+        editControls.classList.add('edit-controls')
+
+        const okButton = document.createElement('input')
+        okButton.type = 'button'
+        okButton.value = 'OK'
+
+        const cancelButton = document.createElement('input')
+        cancelButton.type = 'button'
+        cancelButton.value = 'CANCEL'
+
+        editControls.append(okButton, cancelButton)
+        editWrapper.append(textarea, editControls)
+
+        return { editWrapper, textarea, editControls, okButton, cancelButton }
+      }
+
+      const { editWrapper, textarea, editControls, okButton, cancelButton } =
+        createEditElement()
+
+      let isEdit = false
+      let oldInnerHTML
+
+      const baguaTable = document
+        .querySelector('#bagua-table')
+        .addEventListener('click', (event) => {
+          const td = event.target.closest('td')
+
+          if (event.target === okButton) {
+            isEdit = false
+            td.innerHTML = textarea.value
+            editWrapper.remove()
+            return
+          }
+
+          if (event.target === cancelButton) {
+            isEdit = false
+            td.innerHTML = oldInnerHTML
+            editWrapper.remove()
+            return
+          }
+
+          if (td) {
+            if (isEdit) return
+
+            isEdit = true
+
+            editWrapper.style.width = `${td.clientWidth}px`
+            editWrapper.style.height = `${td.clientHeight}px`
+
+            editControls.style.top = `${td.clientHeight}px`
+            editControls.style.left = `${0}px`
+
+            textarea.value = td.innerHTML
+            oldInnerHTML = td.innerHTML
+            td.innerHTML = ''
+
+            td.append(editWrapper)
+            textarea.focus()
+          }
+        })
+    </script>
+  </body>
+</html>
